@@ -8,18 +8,20 @@
 #define uint16 unsigned int
 #define uint32 unsigned long int
  
-// connect to digital 0,1
+// connect to digital 2,3
 int Clkpin = 2;
 int Datapin = 3;
 int errFlag = 0;
 
+// ADK Definition "sweemeng is the manufacture, 
+// ADKTestProject is the device nme
 AndroidAccessory acc("sweemeng",
                       "ADKTestProject",
                       "ADK Demo Code",
                       "0.1",
                       "http://www.android.com",
                       "0000000012345678");
- 
+// Begin LED Function
 void ClkProduce(void)
 {
   digitalWrite(Clkpin, LOW);
@@ -93,19 +95,26 @@ void DataDealWithAndSend(uint8 r, uint8 g, uint8 b)
  
     DatSend(dx);
 }
- 
-void setup()  { 
+// End LED Function
+
+void setup()  {
+  // Serial is good, it is the print of Arduino
   Serial.begin(9600);
   Serial.println("\r\nADK Started\r\n");
   
   pinMode(Datapin, OUTPUT);
   pinMode(Clkpin, OUTPUT);
+
+  // Start ADK
   acc.powerOn();
 } 
  
 void loop()  { 
+  // Data Definition
   byte data[3];
+  // Are we connected? 
   if(acc.isConnected()){
+    // Yes we are, now lets read from Android App
     int len = acc.read(data,sizeof(data),1);
     int i;
     byte b;
